@@ -1,0 +1,8 @@
+[sf-hypervisors]
+10.128.1.10
+
+[hypervisors:children]
+sf-hypervisors
+
+[sf:children]
+sf-hypervisors
