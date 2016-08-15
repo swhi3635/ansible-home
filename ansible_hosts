@@ -1,8 +1,15 @@
+[vagrant]
+vm1 ansible_user=ubuntu ansible_host=127.0.0.1 ansible_port=2200 ansible_ssh_private_key_file=/Users/samwhitney/source/misc/ansible-home/.vagrant/machines/default/virtualbox/private_key
+
 [sf-hypervisors]
-10.128.1.10
+hyper1.sf.samwhitney.com ansible_user=ubuntu ansible_host=10.128.1.10
 
 [hypervisors:children]
 sf-hypervisors
 
 [sf:children]
 sf-hypervisors
+
+[webservers:children]
+vagrant
+
