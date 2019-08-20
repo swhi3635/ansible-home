@@ -1,9 +1,0 @@
----
-  - name: Install and configure nginx
-    hosts: webservers
-    remote_user: root
-    become: yes
-
-    roles:
-      - common
-      - nginx
