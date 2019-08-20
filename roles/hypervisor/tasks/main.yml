@@ -2,3 +2,8 @@
   apt:
     state: present
     name: "{{ virt_packages }}"
+
+# TODO
+# - name: setup bridge interfaces
+# - name: create storage pools
+# - name: create VM definitions

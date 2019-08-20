@@ -7,3 +7,6 @@
 
 - name: include user configs
   include: users.yml
+
+- name: include sshd configs
+  include: sshd.yml
