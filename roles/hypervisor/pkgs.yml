@@ -1,0 +1,18 @@
+---
+- hosts: hypervisors
+  become: true
+  tasks:
+  - name: install virtualization packages
+    apt:
+      state: present
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - bridge-utils
+      - libvirt-bin
+      - python-libvirt
+      - python-lxml
+      - python3-libvirt
+      - python3-lxml
+      - qemu
+      - qemu-kvm

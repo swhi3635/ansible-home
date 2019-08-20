@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  - name: set passwordless sudo
+    lineinfile:
+      path: /etc/sudoers
+      regexp: ^%sudo
+      line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+      state: present
+      validate: 'visudo -cf %s'

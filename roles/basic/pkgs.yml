@@ -1,0 +1,17 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  - name: install common packages amongst all hosts
+    apt:
+      state: present
+      name: "{{ item }}"
+      force_apt_get: yes
+    loop:
+      - aptitude
+      - git
+      - python
+      - python-apt
+      - python3
+      - python3-apt
+      - vim
