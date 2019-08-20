@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: true
+  roles:
+  - basic
+
+- hosts: hypervisors
+  become: true
+  roles:
+  - hypervisor

@@ -1,0 +1,9 @@
+---
+- name: include pkgs config
+  include: pkgs.yml
+
+- name: include passwordless sudo config
+  include: sudo.yml
+
+- name: include user configs
+  include: users.yml
