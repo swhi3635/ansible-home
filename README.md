@@ -12,8 +12,6 @@ In the case of this project, I've decided to migrate my media streaming server f
  - I _might_ save money in the long run, since the ongoing cost of keeping the new machine online is less than the cost of the dedicated server.
  - Most importantly, it will be fun!
 
-# Technical details
-
 ## Goals
  - Ensure a positive user experience for anyone using the services provided by this system (friends/family using my media library, etc.)
  - Utilize Ansible to allow me to fully configure the baremetal machine, guest VMs, and any containers from scratch with minimal manual effort
