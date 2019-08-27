@@ -1,0 +1,51 @@
+- import_role:
+    name: karmab.kcli-modules
+
+- name: setup kcli apt repository
+  apt_repository:
+    repo: deb [trusted=yes] https://packagecloud.io/karmab/kcli/ubuntu/ cosmic main
+    state: present
+
+- name: install python3-distutils package
+  apt:
+    name: python3-distutils
+    state: present
+
+- name: install genisoimage package
+  apt:
+    name: genisoimage
+    state: present
+
+- name: install kcli package
+  apt:
+    name: python3-kcli
+    state: present
+
+- name: set up default libvirt pool in kcli
+  command: kcli pool -p /var/lib/libvirt/images default
+  args:
+    creates: /etc/libvirt/storage/default.xml
+
+- name: set up custom libvirt net in kcli
+  command: 
+
+- name: download ubuntu 18.04 image
+  command: kcli download ubuntu1804
+  args:
+    creates: /var/lib/libvirt/images/bionic-server-cloudimg-amd64.img
+
+- name: create docker01 VM
+  kvirt_vm:
+    name: docker01
+    state: present
+    profile: bionic-server-cloudimg-amd64.img
+    parameters:
+      numcpus: 4
+      memory: 2048
+      disksize: 40GB
+      nets:
+      - default
+      autostart: true
+  register: docker01_create
+
+- debug: var=docker01_create

@@ -3,3 +3,4 @@
     name: sam
     groups:
     - sudo
+    append: yes

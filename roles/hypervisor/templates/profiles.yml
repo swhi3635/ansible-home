@@ -1,0 +1,8 @@
+docker-host:
+  template: bionic-server-cloudimg-amd64.img
+  numcpus: 4
+  memory: 2048
+  disksize: 40GB
+  nets:
+  - default
+  autostart: true

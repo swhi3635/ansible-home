@@ -1,9 +1,17 @@
+---
 - name: install virtualization packages
   apt:
     state: present
     name: "{{ virt_packages }}"
 
-# TODO
-# - name: setup bridge interfaces
-# - name: create storage pools
-# - name: create VM definitions
+- name: add sam to libvirt groups
+  user:
+    name: sam
+    groups:
+    - kvm
+    - libvirt
+    - libvirt-qemu
+    append: yes
+
+- name: include kcli configs
+  include: kcli.yml
