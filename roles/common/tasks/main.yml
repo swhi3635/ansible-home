@@ -1,12 +1,12 @@
 ---
-- name: include pkgs config
-  include: pkgs.yml
+- name: Install common packages
+  include: packages.yml
 
-- name: include passwordless sudo config
+- name: Configure passwordless sudo
   include: sudo.yml
 
-- name: include user configs
+- name: Set up users
   include: users.yml
 
-- name: include sshd configs
-  include: sshd.yml
+- name: Configure SSH
+  include: ssh.yml

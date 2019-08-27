@@ -1,0 +1,19 @@
+- name: disable root ssh login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PermitRootLogin'
+    line: 'PermitRootLogin no'
+    state: present
+    backrefs: yes
+    validate: '/usr/sbin/sshd -T -f %s'
+  notify: reload-ssh-service
+
+- name: disable ssh password authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PasswordAuthentication'
+    line: 'PasswordAuthentication no'
+    state: present
+    backrefs: yes
+    validate: '/usr/sbin/sshd -T -f %s'
+  notify: reload-ssh-service

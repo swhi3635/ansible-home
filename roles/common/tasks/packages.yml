@@ -1,0 +1,14 @@
+- name: install apt convenience packages
+  apt:
+    state: latest
+    name: "{{ item }}"
+    force_apt_get: yes
+  loop:
+    - aptitude
+    - python3
+    - python3-apt
+
+- name: install common packages
+  apt:
+    name: "{{ common_packages }}"
+    state: latest

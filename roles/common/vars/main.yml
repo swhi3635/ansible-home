@@ -1,0 +1,6 @@
+---
+common_packages:
+- git
+- tree
+- vim
+- wget

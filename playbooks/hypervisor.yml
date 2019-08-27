@@ -1,0 +1,7 @@
+---
+- hosts: hypervisors
+  become: true
+  roles:
+  - common
+  - bastion
+  - hypervisor
