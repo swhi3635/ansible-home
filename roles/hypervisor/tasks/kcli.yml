@@ -26,9 +26,6 @@
   args:
     creates: /etc/libvirt/storage/default.xml
 
-- name: set up custom libvirt net in kcli
-  command: 
-
 - name: download ubuntu 18.04 image
   command: kcli download ubuntu1804
   args:
