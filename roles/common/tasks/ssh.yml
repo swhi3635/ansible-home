@@ -1,3 +1,4 @@
+---
 - name: disable root ssh login
   lineinfile:
     path: /etc/ssh/sshd_config

@@ -1,6 +1,12 @@
+---
 - name: set up user sam
   user:
     name: sam
     groups:
     - sudo
     append: yes
+
+- name: install sam's SSH public keys
+  authorized_key:
+    key: https://github.com/swhi3635.keys
+    user: sam

@@ -1,3 +1,4 @@
+---
 - name: set passwordless sudo
   lineinfile:
     path: /etc/sudoers
