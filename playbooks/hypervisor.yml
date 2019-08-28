@@ -1,4 +1,5 @@
 ---
+# Applies configs needed to get a KVM hypervisor up and running
 - hosts: hypervisors
   become: true
   roles:

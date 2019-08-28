@@ -1,0 +1,8 @@
+---
+# Applies necessary configs to get a Docker host up and running
+- hosts: docker_hosts
+  become: true
+  roles:
+  - common
+  - bastion
+  - docker

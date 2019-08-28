@@ -1,0 +1,6 @@
+---
+# Applies configs common to all hosts
+- hosts: all
+  become: true
+  roles:
+  - common

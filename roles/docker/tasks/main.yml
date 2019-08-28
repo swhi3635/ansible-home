@@ -1,0 +1,53 @@
+---
+- import_role:
+    name: geerlingguy.docker
+  vars:
+    docker_edition: 'ce'
+    docker_package_state: latest
+    docker_service_state: started
+    docker_service_enabled: true
+    docker_restart_handler_state: restarted
+    docker_users:
+    - sam
+
+- import_role:
+    name: geerlingguy.pip
+  vars:
+    pip_package: python3-pip
+    pip_executable: pip3
+    pip_install_packages:
+      - name: docker
+
+- import_role:
+    name: ansible-mdadm
+  vars:
+    mdadm_arrays:
+      - name: md0
+        state: present
+        level: 1
+        devices:
+        - /dev/sdc
+        - /dev/sdd
+        filesystem: ext4
+        mountpoint: /mnt/md0
+        opts: 'noatime'
+
+- name: pull Plex docker image
+  docker_image:
+    name: linuxserver/plex
+    source: pull
+
+- name: set up docker volume for media
+  docker_volume:
+    name: media
+    driver: local
+    driver_options:
+      type: ext4
+      device: /dev/md0
+
+- name: create Plex container
+  docker_container:
+    name: plexserver
+    image: linuxserver/plex
+    volumes:
+      - /media

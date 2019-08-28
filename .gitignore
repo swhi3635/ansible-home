@@ -1,5 +1,3 @@
 .vagrant/
 *.retry
 *.log
-
-roles/karmab.kcli-modules
