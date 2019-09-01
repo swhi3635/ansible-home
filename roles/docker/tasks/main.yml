@@ -37,17 +37,44 @@
     name: linuxserver/plex
     source: pull
 
-- name: set up docker volume for media
-  docker_volume:
-    name: media
-    driver: local
-    driver_options:
-      type: ext4
-      device: /dev/md0
-
 - name: create Plex container
   docker_container:
     name: plexserver
     image: linuxserver/plex
+    env:
+      PUID: "1000"
+      PGID: "1000"
+      VERSION: "docker"
+      UMASK_SET: "022"
     volumes:
-      - /media
+      - /mnt/md0/plexconfig:/config
+      - /mnt/md0/media/tv:/tv
+      - /mnt/md0/media/movies:/movies
+      - /transcode
+    restart_policy: unless-stopped
+
+- name: pull UniFi Controller docker image
+  docker_image:
+    name: linuxserver/unifi-controller
+    source: pull
+
+- name: create UniFi Controller container
+  docker_container:
+    name: unifi-controller
+    image: linuxserver/unifi-controller
+    env:
+      PUID: "1000"
+      PGID: "1000"
+      MEM_LIMIT: "1024M"
+    volumes:
+      - /config
+    ports:
+      - 3478:3478/udp
+      - 10001:10001/udp
+      - 8080:8080
+      - 8081:8081
+      - 8443:8443
+      - 8843:8843
+      - 8880:8880
+      - 6789:6789
+    restart_policy: unless-stopped
