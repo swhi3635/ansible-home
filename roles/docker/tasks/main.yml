@@ -46,10 +46,10 @@
       PGID: "1000"
       VERSION: "docker"
       UMASK_SET: "022"
+    network_mode: host
     volumes:
       - /mnt/md0/plexconfig:/config
-      - /mnt/md0/media/tv:/tv
-      - /mnt/md0/media/movies:/movies
+      - /mnt/md0/media/:/media
       - /transcode
     restart_policy: unless-stopped
 
@@ -77,4 +77,28 @@
       - 8843:8843
       - 8880:8880
       - 6789:6789
+    restart_policy: unless-stopped
+
+- name: pull Qbittorrent docker image
+  docker_image:
+    name: linuxserver/qbittorrent
+    source: pull
+
+- name: create Qbittorrent container
+  docker_container:
+    name: qbittorrent
+    image: linuxserver/qbittorrent
+    env:
+      PUID: "1000"
+      PGID: "1000"
+      TZ: "America/Los_Angeles"
+      UMASK_SET: "022"
+      WEBUI_PORT: "8181"
+    volumes:
+      - /config
+      - /mnt/md0/downloads:/downloads
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 8181:8181
     restart_policy: unless-stopped
