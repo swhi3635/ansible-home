@@ -17,6 +17,9 @@ services:
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
+    depends_on:
+      - qbittorrent
+      - plex
     environment:
       - PUID={{ default_container_puid }}
       - PGID={{ default_container_pgid }}
@@ -32,6 +35,9 @@ services:
   radarr:
     image: linuxserver/radarr
     container_name: radarr
+    depends_on:
+      - qbittorrent
+      - plex
     environment:
       - PUID={{ default_container_puid }}
       - PGID={{ default_container_pgid }}
@@ -61,3 +67,17 @@ services:
       - 6881:6881/udp
       - 8181:8181
     restart: unless-stopped
+  filebot-watcher:
+    image: coppit/filebot
+    container_name: filebot-watcher
+    depends_on:
+      - qbittorrent
+    environment:
+      - USER_ID={{ default_container_puid }}
+      - GROUP_ID={{ default_container_pgid }}
+      - UMASK=0022
+      - INPUT_DIR=/media/downloads/complete
+      - OUTPUT_DIR=/media
+    volumes:
+      - {{ media_volume_config_dir }}/filebot:/config
+      - {{ media_volume_media_dir}}:/media
