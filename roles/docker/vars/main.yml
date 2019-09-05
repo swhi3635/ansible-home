@@ -1,0 +1,19 @@
+---
+# storage config
+mountpoint_root: "/mnt"
+mdraid_volume1_name: "md0"
+mdraid_volume1_mountpoint: "{{ mountpoint_root }}/{{ mdraid_volume1_name }}"
+
+# container defaults
+default_container_puid: 1000
+default_container_pgid: 1000
+default_container_timezone: "America/Los_Angeles"
+default_container_umask: "022"
+
+# docker volume locations
+media_volume_root: "{{ mdraid_volume1_mountpoint }}"
+media_volume_config_dir: "{{ media_volume_root }}/config"
+media_volume_media_dir: "{{ media_volume_root }}/media"
+media_volume_tv_dir: "{{ media_volume_media_dir }}/tv"
+media_volume_movies_dir: "{{ media_volume_media_dir }}/movies"
+media_volume_downloads_dir: "{{ media_volume_media_dir }}/downloads"

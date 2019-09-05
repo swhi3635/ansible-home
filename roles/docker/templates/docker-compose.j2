@@ -1,0 +1,63 @@
+version: "3"
+services:
+  plex:
+    image: linuxserver/plex
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID={{ default_container_puid }}
+      - PGID={{ default_container_pgid }}
+      - VERSION=docker
+      - UMASK_SET={{ default_container_umask }}
+    volumes:
+      - {{ media_volume_config_dir }}/plex:/config
+      - {{ media_volume_media_dir }}:/media
+      - /transcode
+    restart: unless-stopped
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID={{ default_container_puid }}
+      - PGID={{ default_container_pgid }}
+      - TZ={{ default_container_timezone }}
+      - UMASK_SET={{ default_container_umask }}
+    volumes:
+      - {{ media_volume_config_dir }}/sonarr:/config
+      - {{ media_volume_tv_dir }}:/tv
+      - {{ media_volume_downloads_dir }}:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID={{ default_container_puid }}
+      - PGID={{ default_container_pgid }}
+      - TZ={{ default_container_timezone }}
+      - UMASK_SET={{ default_container_umask }}
+    volumes:
+      - {{ media_volume_config_dir }}/radarr:/config
+      - {{ media_volume_movies_dir }}:/movies
+      - {{ media_volume_downloads_dir }}:/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+  qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID={{ default_container_puid }}
+      - PGID={{ default_container_pgid }}
+      - TZ={{ default_container_timezone }}
+      - UMASK_SET={{ default_container_umask }}
+      - WEBUI_PORT=8181
+    volumes:
+      - {{ media_volume_config_dir }}/qbittorrent:/config
+      - {{ media_volume_downloads_dir }}:/downloads
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 8181:8181
+    restart: unless-stopped
