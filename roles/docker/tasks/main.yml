@@ -65,3 +65,4 @@
     owner: sam
     group: sam
     mode: '0644'
+    validate: docker-compose -f %s config
