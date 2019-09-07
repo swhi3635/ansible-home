@@ -58,9 +58,9 @@
       - 6789:6789
     restart_policy: unless-stopped
 
-- name: Template docker-compose.j2 to /home/sam/docker-compose.yml
+- name: Template docker-compose.yaml.j2 to /home/sam/docker-compose.yml
   template:
-    src: docker-compose.j2
+    src: docker-compose.yaml.j2
     dest: /home/sam/docker-compose.yml
     owner: sam
     group: sam

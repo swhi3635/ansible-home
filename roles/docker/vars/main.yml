@@ -17,3 +17,19 @@ media_volume_media_dir: "{{ media_volume_root }}/media"
 media_volume_tv_dir: "{{ media_volume_media_dir }}/tv"
 media_volume_movies_dir: "{{ media_volume_media_dir }}/movies"
 media_volume_downloads_dir: "{{ media_volume_media_dir }}/downloads"
+
+# reverse-proxy ports
+qbittorrent_webui_port: 8181
+radarr_webui_port: 7878
+sonarr_webui_port: 8989
+
+#traefik configs
+traefik_commands:
+  - "--log.level=INFO"
+  - "--api.dashboard=true"
+  - "--providers.docker=true"
+  - "--providers.docker.exposedbydefault=false"
+  - "--entrypoints.web.address=:80"
+  - "--entrypoints.traefik.address=:8888"
+  - "traefik.http.routers.api.rule=PathPrefix(`/api`) || PathPrefix(`/dashboard`)"
+  - "traefik.http.routers.api.service=api@internal"

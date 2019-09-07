@@ -1,14 +1,29 @@
 version: "3"
 services:
+  traefik:
+    image: traefik:2.0
+    container_name: traefik
+    command: {{ traefik_commands }}
+    ports:
+      - 80:80
+      - 8888:8888
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   plex:
     image: linuxserver/plex
     container_name: plex
-    network_mode: host
     environment:
       - PUID={{ default_container_puid }}
       - PGID={{ default_container_pgid }}
       - VERSION=docker
       - UMASK_SET={{ default_container_umask }}
+    ports:
+      - 32400:32400
+      - 32400:32400/udp
+      - 32469:32469
+      - 32469:32469/udp
+      - 5353:5353/udp
+      - 1900:1900/udp
     volumes:
       - {{ media_volume_config_dir }}/plex:/config
       - {{ media_volume_media_dir }}:/media
@@ -17,9 +32,6 @@ services:
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
-    depends_on:
-      - qbittorrent
-      - plex
     environment:
       - PUID={{ default_container_puid }}
       - PGID={{ default_container_pgid }}
@@ -30,14 +42,15 @@ services:
       - {{ media_volume_tv_dir }}:/tv
       - {{ media_volume_downloads_dir }}:/downloads
     ports:
-      - 8989:8989
+      - {{ sonarr_webui_port }}:{{ sonarr_webui_port }}
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port={{ sonarr_webui_port }}"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.docker.local`)"
   radarr:
     image: linuxserver/radarr
     container_name: radarr
-    depends_on:
-      - qbittorrent
-      - plex
     environment:
       - PUID={{ default_container_puid }}
       - PGID={{ default_container_pgid }}
@@ -48,8 +61,12 @@ services:
       - {{ media_volume_movies_dir }}:/movies
       - {{ media_volume_downloads_dir }}:/downloads
     ports:
-      - 7878:7878
+      - {{ radarr_webui_port }}:{{ radarr_webui_port }}
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port={{ radarr_webui_port }}"
+      - "traefik.http.routers.radarr.rule=Host(`radarr.docker.local`)"
   qbittorrent:
     image: linuxserver/qbittorrent
     container_name: qbittorrent
@@ -65,19 +82,25 @@ services:
     ports:
       - 6881:6881
       - 6881:6881/udp
-      - 8181:8181
+      - {{ qbittorrent_webui_port }}:{{ qbittorrent_webui_port }}
     restart: unless-stopped
-  filebot-watcher:
-    image: coppit/filebot
-    container_name: filebot-watcher
-    depends_on:
-      - qbittorrent
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port={{ qbittorrent_webui_port }}"
+      - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.docker.local`)"
+      - "traefik.http.middlewares.qbittorrent.headers.customrequestheaders.X-Frame-Options=SAMEORIGIN"
+  tinymediamanager:
+    image: romancin/tinymediamanager
+    container_name: tinymediamanager
     environment:
       - USER_ID={{ default_container_puid }}
       - GROUP_ID={{ default_container_pgid }}
-      - UMASK=0022
-      - INPUT_DIR=/media/downloads/complete
-      - OUTPUT_DIR=/media
+      - UMASK={{ default_container_umask }}
+      - TZ={{ default_container_timezone }}
     volumes:
-      - {{ media_volume_config_dir }}/filebot:/config
-      - {{ media_volume_media_dir}}:/media
+      - {{ media_volume_config_dir }}/tinymediamanager:/config
+      - {{ media_volume_media_dir }}:/media
+    ports:
+      - 5900:5900
+      - 5800:5800
+    restart: unless-stopped

@@ -2,6 +2,7 @@
 common_packages:
 - git
 - iftop
+- iotop
 - tree
 - vim
 - wget
