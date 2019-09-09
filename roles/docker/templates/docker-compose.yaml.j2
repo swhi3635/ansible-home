@@ -9,7 +9,7 @@ services:
       - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - {{ media_volume_config_dir }}/letsencrypt:/letsencrypt
+      - {{ config_volume_dir }}/letsencrypt:/letsencrypt
 
   plex:
     image: linuxserver/plex
@@ -27,7 +27,7 @@ services:
       - 5353:5353/udp
       - 1900:1900/udp
     volumes:
-      - {{ media_volume_config_dir }}/plex:/config
+      - {{ config_volume_dir }}/plex:/config
       - {{ media_volume_media_dir }}:/media
       - /transcode
     restart: unless-stopped
@@ -41,7 +41,7 @@ services:
       - TZ={{ default_container_timezone }}
       - UMASK_SET={{ default_container_umask }}
     volumes:
-      - {{ media_volume_config_dir }}/sonarr:/config
+      - {{ config_volume_dir }}/sonarr:/config
       - {{ media_volume_tv_dir }}:/tv
       - {{ media_volume_downloads_dir }}:/downloads
     ports:
@@ -65,7 +65,7 @@ services:
       - TZ={{ default_container_timezone }}
       - UMASK_SET={{ default_container_umask }}
     volumes:
-      - {{ media_volume_config_dir }}/radarr:/config
+      - {{ config_volume_dir }}/radarr:/config
       - {{ media_volume_movies_dir }}:/movies
       - {{ media_volume_downloads_dir }}:/downloads
     ports:
@@ -90,7 +90,7 @@ services:
       - UMASK_SET={{ default_container_umask }}
       - WEBUI_PORT={{ qbittorrent_webui_port }}
     volumes:
-      - {{ media_volume_config_dir }}/qbittorrent:/config
+      - {{ config_volume_dir }}/qbittorrent:/config
       - {{ media_volume_downloads_dir }}:/downloads
     ports:
       - 6881:6881
@@ -107,7 +107,7 @@ services:
       - UMASK={{ default_container_umask }}
       - TZ={{ default_container_timezone }}
     volumes:
-      - {{ media_volume_config_dir }}/tinymediamanager:/config
+      - {{ config_volume_dir }}/tinymediamanager:/config
       - {{ media_volume_media_dir }}:/media
     ports:
       - 5900:5900
@@ -122,7 +122,7 @@ services:
       - PGID={{ default_container_pgid }}
       - TZ={{ default_container_timezone }}
     volumes:
-      - {{ media_volume_config_dir }}/ombi:/config
+      - {{ config_volume_dir }}/ombi:/config
     ports:
       - {{ ombi_webui_port }}:{{ ombi_webui_port }}
     restart: unless-stopped
@@ -141,7 +141,7 @@ services:
       - PGID={{ default_container_pgid }}
       - MEM_LIMIT=1024M
     volumes:
-      - {{ media_volume_config_dir }}/unifi:/config
+      - {{ config_volume_dir }}/unifi:/config
     ports:
       - 3478:3478/udp
       - 10001:10001/udp

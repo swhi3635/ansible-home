@@ -16,8 +16,8 @@ linuxserverio_default_environment:
   - "UMASK_SET={{ default_container_umask }}"
 
 # docker volume locations
+config_volume_dir: "/mnt/sda/config"
 media_volume_root: "{{ mdraid_volume1_mountpoint }}"
-media_volume_config_dir: "{{ media_volume_root }}/config"
 media_volume_media_dir: "{{ media_volume_root }}/media"
 media_volume_tv_dir: "{{ media_volume_media_dir }}/tv"
 media_volume_movies_dir: "{{ media_volume_media_dir }}/movies"
