@@ -98,22 +98,6 @@ services:
       - {{ qbittorrent_webui_port }}:{{ qbittorrent_webui_port }}
     restart: unless-stopped
 
-  tinymediamanager:
-    image: romancin/tinymediamanager
-    container_name: tinymediamanager
-    environment:
-      - USER_ID={{ default_container_puid }}
-      - GROUP_ID={{ default_container_pgid }}
-      - UMASK={{ default_container_umask }}
-      - TZ={{ default_container_timezone }}
-    volumes:
-      - {{ config_volume_dir }}/tinymediamanager:/config
-      - {{ media_volume_media_dir }}:/media
-    ports:
-      - 5900:5900
-      - 5800:5800
-    restart: unless-stopped
-
   ombi:
     image: linuxserver/ombi
     container_name: ombi
