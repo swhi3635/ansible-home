@@ -2,7 +2,4 @@
 - src: karmab.kcli-modules
 - src: geerlingguy.docker
 - src: geerlingguy.pip
-
-# Sourced from GitHub
-- src: git@github.com:mrlesmithjr/ansible-mdadm.git
-  scm: git
+- src: mrlesmithjr/mdadm
