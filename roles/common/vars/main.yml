@@ -3,6 +3,7 @@ common_packages:
 - git
 - iftop
 - iotop
+- rng-tools
 - tree
 - vim
 - wget
