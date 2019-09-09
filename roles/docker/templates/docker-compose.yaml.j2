@@ -50,7 +50,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.port={{ sonarr_webui_port }}"
-      - "traefik.http.routers.sonarr.rule=Host(`sonarr{{ traefik_default_domain }}`)"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.{{ traefik_default_domain }}`)"
       - "traefik.http.routers.sonarr.entrypoints=https"
       - "traefik.http.routers.sonarr.tls.certresolver=myhttpchallenge"
       - "traefik.http.middlewares.sonarr-auth.basicauth.users={{ basic_auth_t0 }}"
@@ -74,7 +74,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.port={{ radarr_webui_port }}"
-      - "traefik.http.routers.radarr.rule=Host(`radarr{{ traefik_default_domain }}`)"
+      - "traefik.http.routers.radarr.rule=Host(`radarr.{{ traefik_default_domain }}`)"
       - "traefik.http.routers.radarr.entrypoints=https"
       - "traefik.http.routers.radarr.tls.certresolver=myhttpchallenge"
       - "traefik.http.middlewares.radarr-auth.basicauth.users={{ basic_auth_t0 }}"
@@ -113,3 +113,23 @@ services:
       - 5900:5900
       - 5800:5800
     restart: unless-stopped
+
+  ombi:
+    image: linuxserver/ombi
+    container_name: ombi
+    environment:
+      - PUID={{ default_container_puid }}
+      - PGID={{ default_container_pgid }}
+      - TZ={{ default_container_timezone }}
+      #- BASE_URL=/ombi
+    volumes:
+      - {{ media_volume_config_dir }}/ombi:/config
+    ports:
+      - {{ ombi_webui_port }}:{{ ombi_webui_port }}
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port={{ ombi_webui_port }}"
+      - "traefik.http.routers.ombi.rule=Host(`ombi.{{ traefik_default_domain }}`)"
+      - "traefik.http.routers.ombi.entrypoints=https"
+      - "traefik.http.routers.ombi.tls.certresolver=myhttpchallenge"
