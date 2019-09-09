@@ -10,6 +10,7 @@
     docker_restart_handler_state: restarted
     docker_users:
     - sam
+    docker_install_compose: false
 
 # Install pip, then install docker python library
 - import_role:
@@ -17,8 +18,12 @@
   vars:
     pip_package: python3-pip
     pip_executable: pip3
-    pip_install_packages:
-      - name: docker
+
+- name: install docker-related pip packages
+  pip:
+    name: "{{ pip_install_docker_packages }}"
+    executable: pip3
+    state: latest
 
 - name: Mount docker config volume 
   mount:
@@ -32,3 +37,6 @@
   file:
     state: directory
     path: /home/sam/docker
+    owner: sam
+    group: sam
+    mode: '0755'

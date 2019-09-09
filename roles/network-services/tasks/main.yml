@@ -15,3 +15,14 @@
     group: sam
     mode: '0644'
     validate: docker-compose -f %s config
+
+- name: Run network-services docker-compose project
+  docker_compose:
+    state: present
+    project_name: network-services
+    project_src: /home/sam/docker/network-services/
+  register: output
+
+- debug:
+    var: output
+    verbosity: 3
