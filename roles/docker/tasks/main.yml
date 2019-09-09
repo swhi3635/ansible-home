@@ -43,32 +43,6 @@
     fstype: ext4
     opts: noatime
 
-- name: pull UniFi Controller docker image
-  docker_image:
-    name: linuxserver/unifi-controller
-    source: pull
-
-- name: create UniFi Controller container
-  docker_container:
-    name: unifi-controller
-    image: linuxserver/unifi-controller
-    env:
-      PUID: "1000"
-      PGID: "1000"
-      MEM_LIMIT: "1024M"
-    volumes:
-      - /config
-    ports:
-      - 3478:3478/udp
-      - 10001:10001/udp
-      - 8080:8080
-      - 8081:8081
-      - 8443:8443
-      - 8843:8843
-      - 8880:8880
-      - 6789:6789
-    restart_policy: unless-stopped
-
 - name: Template docker-compose.yaml.j2 to /home/sam/docker-compose.yml
   template:
     src: docker-compose.yaml.j2
