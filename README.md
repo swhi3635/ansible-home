@@ -1,5 +1,5 @@
 # Overview
-This is just a pet project of mine, with the primary goal of familiarizing myself with Ansible, and a few other tools.  I spent a few years working with Salt, and I've often wondered how it compared to Ansible.  
+This is just a pet project of mine, with the primary goal of familiarizing myself with Ansible and a few other tools.  I spent a few years working with Salt, and I've often wondered how it compared to Ansible.
 
 In my experience, working on technical projects for the sole purpose of learning a new language, software tool, etc. can be difficult.  Thus, it is important to come up with a deliverable that provides some value to me, while tying the new piece of technology into the requirements of the project.
 
