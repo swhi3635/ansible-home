@@ -1,4 +1,8 @@
 ---
+- name: Set timezone to UTC
+  timezone:
+    name: UTC
+
 - name: Install common packages
   include: packages.yml
 
