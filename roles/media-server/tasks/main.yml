@@ -1,0 +1,30 @@
+---
+# Create raid array for media storage volume
+- import_role:
+    name: ansible-mdadm
+  vars:
+    mdadm_arrays:
+      - name: "{{ mdraid_volume1_name }}"
+        state: present
+        level: 1
+        devices: "{{ mdraid_volume1_devices }}"
+        filesystem: ext4
+        mountpoint: "{{ mdraid_volume1_mountpoint }}"
+        opts: 'noatime'
+
+- name: Create docker media project directory
+  file:
+    state: directory
+    path: /home/sam/docker/media/
+    owner: sam
+    group: sam
+    mode: '0755'
+
+- name: Template docker-compose.yaml.j2 to docker project directory
+  template:
+    src: docker-compose.yaml.j2
+    dest: /home/sam/docker/media/docker-compose.yml
+    owner: sam
+    group: sam
+    mode: '0644'
+    validate: docker-compose -f %s config

@@ -6,3 +6,5 @@
   - common
   - bastion
   - docker
+  - media-server
+  - network-services

@@ -1,0 +1,17 @@
+---
+- name: Create docker network services project directory
+  file:
+    state: directory
+    path: /home/sam/docker/network-services/
+    owner: sam
+    group: sam
+    mode: '0755'
+
+- name: Template docker-compose.yaml.j2 to /home/sam/docker/network-services/docker-compose.yml
+  template:
+    src: docker-compose.yaml.j2
+    dest: /home/sam/docker/network-services/docker-compose.yml
+    owner: sam
+    group: sam
+    mode: '0644'
+    validate: docker-compose -f %s config

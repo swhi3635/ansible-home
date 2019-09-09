@@ -20,34 +20,15 @@
     pip_install_packages:
       - name: docker
 
-# Create raid array for media storage volume
-- import_role:
-    name: ansible-mdadm
-  vars:
-    mdadm_arrays:
-      - name: "{{ mdraid_volume1_name }}"
-        state: present
-        level: 1
-        devices:
-        - /dev/sdc
-        - /dev/sdd
-        filesystem: ext4
-        mountpoint: "{{ mdraid_volume1_mountpoint }}"
-        opts: 'noatime'
-
-- name: Mount /dev/sda to /mnt/sda
+- name: Mount docker config volume 
   mount:
     state: mounted
-    path: /mnt/sda
-    src: /dev/sda
+    path: "{{ config_volume_mountpoint }}"
+    src: "{{ config_volume_device }}"
     fstype: ext4
     opts: noatime
 
-- name: Template docker-compose.yaml.j2 to /home/sam/docker-compose.yml
-  template:
-    src: docker-compose.yaml.j2
-    dest: /home/sam/docker-compose.yml
-    owner: sam
-    group: sam
-    mode: '0644'
-    validate: docker-compose -f %s config
+- name: Create directory for docker-compose projects
+  file:
+    state: directory
+    path: /home/sam/docker

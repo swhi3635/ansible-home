@@ -1,3 +1,28 @@
 ---
 domain_name: "{{ vault_domain_name }}"
 basic_auth_t0: "{{ vault_basic_auth_t0 }}"
+
+# container defaults
+default_container_puid: 1000
+default_container_pgid: 1000
+default_container_timezone: "UTC"
+default_container_umask: "022"
+linuxserverio_default_environment:
+  - "PUID={{ default_container_puid }}"
+  - "PGID={{ default_container_pgid }}"
+  - "TZ={{ default_container_timezone }}"
+  - "UMASK_SET={{ default_container_umask }}"
+
+# storage config
+mountpoint_root: "/mnt"
+mdraid_volume1_devices:
+  - "/dev/sdc"
+  - "/dev/sdd"
+mdraid_volume1_name: "md0"
+mdraid_volume1_mountpoint: "{{ mountpoint_root }}/{{ mdraid_volume1_name }}"
+config_volume_device: "/dev/sda"
+config_volume_mountpoint: "{{ mountpoint_root }}/sda"
+
+# docker volume locations
+config_volume_dir: "{{ config_volume_mountpoint }}/config"
+media_volume_root: "{{ mdraid_volume1_mountpoint }}"
