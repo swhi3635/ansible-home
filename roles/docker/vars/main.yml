@@ -9,6 +9,11 @@ default_container_puid: 1000
 default_container_pgid: 1000
 default_container_timezone: "America/Los_Angeles"
 default_container_umask: "022"
+linuxserverio_default_environment:
+  - "PUID={{ default_container_puid }}"
+  - "PGID={{ default_container_pgid }}"
+  - "TZ={{ default_container_timezone }}"
+  - "UMASK_SET={{ default_container_umask }}"
 
 # docker volume locations
 media_volume_root: "{{ mdraid_volume1_mountpoint }}"
@@ -26,10 +31,13 @@ sonarr_webui_port: 8989
 #traefik configs
 traefik_commands:
   - "--log.level=INFO"
-  - "--api.dashboard=true"
   - "--providers.docker=true"
   - "--providers.docker.exposedbydefault=false"
-  - "--entrypoints.web.address=:80"
-  - "--entrypoints.traefik.address=:8888"
-  - "traefik.http.routers.api.rule=PathPrefix(`/api`) || PathPrefix(`/dashboard`)"
-  - "traefik.http.routers.api.service=api@internal"
+  - "--entrypoints.http.address=:80"
+  - "--entrypoints.https.address=:443"
+  - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge=true"
+  - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge.entrypoint=http"
+  - "--certificatesresolvers.myhttpchallenge.acme.email=sam@samwhitney.com"
+  - "--certificatesresolvers.myhttpchallenge.acme.storage=/letsencrypt/acme.json"
+
+traefik_default_domain: ".{{ domain_name }}"

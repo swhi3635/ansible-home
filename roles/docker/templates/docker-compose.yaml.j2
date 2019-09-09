@@ -6,9 +6,11 @@ services:
     command: {{ traefik_commands }}
     ports:
       - 80:80
-      - 8888:8888
+      - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - {{ media_volume_config_dir }}/letsencrypt:/letsencrypt
+
   plex:
     image: linuxserver/plex
     container_name: plex
@@ -29,6 +31,7 @@ services:
       - {{ media_volume_media_dir }}:/media
       - /transcode
     restart: unless-stopped
+
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
@@ -47,7 +50,12 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.port={{ sonarr_webui_port }}"
-      - "traefik.http.routers.sonarr.rule=Host(`sonarr.docker.local`)"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr{{ traefik_default_domain }}`)"
+      - "traefik.http.routers.sonarr.entrypoints=https"
+      - "traefik.http.routers.sonarr.tls.certresolver=myhttpchallenge"
+      - "traefik.http.middlewares.sonarr-auth.basicauth.users={{ basic_auth_t0 }}"
+      - "traefik.http.routers.sonarr.middlewares=sonarr-auth@docker"
+
   radarr:
     image: linuxserver/radarr
     container_name: radarr
@@ -66,7 +74,12 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.port={{ radarr_webui_port }}"
-      - "traefik.http.routers.radarr.rule=Host(`radarr.docker.local`)"
+      - "traefik.http.routers.radarr.rule=Host(`radarr{{ traefik_default_domain }}`)"
+      - "traefik.http.routers.radarr.entrypoints=https"
+      - "traefik.http.routers.radarr.tls.certresolver=myhttpchallenge"
+      - "traefik.http.middlewares.radarr-auth.basicauth.users={{ basic_auth_t0 }}"
+      - "traefik.http.routers.radarr.middlewares=radarr-auth@docker"
+
   qbittorrent:
     image: linuxserver/qbittorrent
     container_name: qbittorrent
@@ -75,7 +88,7 @@ services:
       - PGID={{ default_container_pgid }}
       - TZ={{ default_container_timezone }}
       - UMASK_SET={{ default_container_umask }}
-      - WEBUI_PORT=8181
+      - WEBUI_PORT={{ qbittorrent_webui_port }}
     volumes:
       - {{ media_volume_config_dir }}/qbittorrent:/config
       - {{ media_volume_downloads_dir }}:/downloads
@@ -84,11 +97,7 @@ services:
       - 6881:6881/udp
       - {{ qbittorrent_webui_port }}:{{ qbittorrent_webui_port }}
     restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.port={{ qbittorrent_webui_port }}"
-      - "traefik.http.routers.qbittorrent.rule=Host(`qbittorrent.docker.local`)"
-      - "traefik.http.middlewares.qbittorrent.headers.customrequestheaders.X-Frame-Options=SAMEORIGIN"
+
   tinymediamanager:
     image: romancin/tinymediamanager
     container_name: tinymediamanager
