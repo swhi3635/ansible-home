@@ -3,3 +3,6 @@ gambler01
 
 [docker_hosts]
 gambler01
+
+[raspberry_pi]
+rpi01

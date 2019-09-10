@@ -1,0 +1,8 @@
+---
+# Bootstrap raspberry pi with fresh OS install
+- hosts: raspberry_pi
+  become: true
+  gather_facts: no
+  roles:
+  - pi-bootstrap
+  - common

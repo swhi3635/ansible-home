@@ -1,0 +1,12 @@
+---
+- name: Check if connection is possible
+  command: ssh -o User={{ ansible_user }} -o ConnectTimeout=10 -o PreferredAuthentications=publickey -o PubkeyAuthentication=yes {{ inventory_hostname }} echo "Worked"
+  register: result
+  connection: local
+  ignore_errors: yes
+  changed_when: False
+- name: If no connection, change user_name
+  connection: local
+  set_fact:
+    ansible_user: "{{ bootstrap_login_user }}"
+  when: result is failed
