@@ -9,6 +9,9 @@ media_volume_tv_dir: "{{ media_volume_media_dir }}/tv"
 media_volume_movies_dir: "{{ media_volume_media_dir }}/movies"
 media_volume_downloads_dir: "{{ media_volume_media_dir }}/downloads"
 
+# docker-compose project locations
+docker_media_project_dir: "{{ docker_compose_project_dir }}/media"
+
 # reverse-proxy ports
 qbittorrent_webui_port: 8181
 radarr_webui_port: 7878

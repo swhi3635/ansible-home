@@ -4,9 +4,9 @@
     state: present
     name: "{{ virt_packages }}"
 
-- name: add sam to libvirt groups
+- name: add default user to libvirt groups
   user:
-    name: sam
+    name: "{{ default_user }}"
     groups:
     - kvm
     - libvirt

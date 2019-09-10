@@ -1,12 +1,12 @@
 ---
-- name: set up user sam
+- name: set up default user
   user:
-    name: sam
+    name: "{{ default_user }}"
     groups:
     - sudo
     append: yes
 
-- name: install sam's SSH public keys
+- name: install default user SSH public keys
   authorized_key:
-    key: https://github.com/swhi3635.keys
-    user: sam
+    key: "https://github.com/{{ default_user_github }}.keys"
+    user: "{{ default_user }}"

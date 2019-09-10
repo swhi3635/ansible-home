@@ -9,7 +9,7 @@
     docker_service_enabled: true
     docker_restart_handler_state: restarted
     docker_users:
-    - sam
+    - "{{ default_user }}"
     docker_install_compose: false
 
 # Install pip, then install docker python library
@@ -36,7 +36,7 @@
 - name: Create directory for docker-compose projects
   file:
     state: directory
-    path: /home/sam/docker
-    owner: sam
-    group: sam
+    path: "{{ docker_compose_project_dir }}"
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
     mode: '0755'

@@ -1,4 +1,6 @@
 ---
+docker_compose_project_dir: "{{ default_user_homedir }}/docker"
+
 domain_name: "{{ vault_domain_name }}"
 basic_auth_t0: "{{ vault_basic_auth_t0 }}"
 

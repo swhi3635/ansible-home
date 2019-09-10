@@ -1,0 +1,4 @@
+---
+default_user: "sam"
+default_user_homedir: "/home/{{ default_user }}"
+default_user_github: "swhi3635"
