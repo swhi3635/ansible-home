@@ -1,5 +1,5 @@
 ---
-# Install docker and do initial setup
+# Install docker and do initial setup on x86-64-based  systems
 - import_role:
     name: geerlingguy.docker
   vars:
@@ -11,6 +11,16 @@
     docker_users:
     - "{{ default_user }}"
     docker_install_compose: false
+  when: ansible_architecture == 'x86_64'
+
+# Install docker and do initial setup on ARM-based systems
+- import_role:
+    name: geerlingguy.docker_arm
+  vars:
+    docker_users:
+    - "{{ default_user }}"
+    docker_install_compose: false
+  when: ansible_architecture == 'armv7l'
 
 # Install pip, then install docker python library
 - import_role:
@@ -32,6 +42,7 @@
     src: "{{ config_volume_device }}"
     fstype: ext4
     opts: noatime
+  when: config_volume_device is defined and config_volume_mountpoint is defined
 
 - name: Create directory for docker-compose projects
   file:

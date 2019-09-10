@@ -1,8 +1,8 @@
 [hypervisors]
-gambler01
 
 [docker_hosts]
 gambler01
+rpi01
 
 [raspberry_pi]
 rpi01

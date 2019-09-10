@@ -16,10 +16,10 @@
     mode: '0644'
     validate: docker-compose -f %s config
 
-- name: Run network-services docker-compose project
+- name: Run unifi-controller docker-compose project
   docker_compose:
     state: present
-    project_name: network-services
+    project_name: unifi-controller
     project_src: "{{ docker_networkservices_project_dir }}"
   register: output
 

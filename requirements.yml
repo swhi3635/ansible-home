@@ -1,5 +1,6 @@
 # Roles, etc. sourced from Ansible Galaxy
 - src: karmab.kcli-modules
 - src: geerlingguy.docker
+- src: geerlingguy.docker_arm
 - src: geerlingguy.pip
 - src: mrlesmithjr/mdadm
