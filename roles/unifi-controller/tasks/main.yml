@@ -1,8 +1,8 @@
 ---
-- name: Create docker network services project directory
+- name: Create docker unifi-controller project directory
   file:
     state: directory
-    path: "{{ docker_networkservices_project_dir }}"
+    path: "{{ docker_unifi_controller_project_dir }}"
     owner: "{{ default_user }}"
     group: "{{ default_user }}"
     mode: '0755'
@@ -10,7 +10,7 @@
 - name: Template docker-compose.yaml.j2 to project directory
   template:
     src: docker-compose.yaml.j2
-    dest: "{{ docker_networkservices_project_dir }}/docker-compose.yml"
+    dest: "{{ docker_unifi_controller_project_dir }}/docker-compose.yml"
     owner: "{{ default_user }}"
     group: "{{ default_user }}"
     mode: '0644'
@@ -20,7 +20,7 @@
   docker_compose:
     state: present
     project_name: unifi-controller
-    project_src: "{{ docker_networkservices_project_dir }}"
+    project_src: "{{ docker_unifi_controller_project_dir }}"
   register: output
 
 - debug:
