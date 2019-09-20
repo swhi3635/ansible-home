@@ -10,7 +10,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - {{ config_volume_dir }}/letsencrypt:/letsencrypt
-  restart: unless-stopped
+    restart: unless-stopped
 
   plex:
     image: linuxserver/plex
