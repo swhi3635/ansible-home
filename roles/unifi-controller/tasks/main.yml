@@ -23,6 +23,14 @@
     project_src: "{{ docker_unifi_controller_project_dir }}"
   register: output
 
+- name: Template config.gateway.json for wireguard configuration
+  template:
+    src: config.gateway.json.j2
+    dest: "{{ config_volume_dir }}/unifi/data/sites/default/config.gateway.json"
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
+    mode: '0644'
+
 - debug:
     var: output
     verbosity: 3
