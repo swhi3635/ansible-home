@@ -14,3 +14,5 @@ linuxserverio_default_environment:
   - "PGID={{ default_container_pgid }}"
   - "TZ={{ default_container_timezone }}"
   - "UMASK_SET={{ default_container_umask }}"
+
+pihole_webui_pass: "{{ vault_pihole_webui_pass }}"

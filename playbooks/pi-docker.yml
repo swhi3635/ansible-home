@@ -1,0 +1,6 @@
+---
+# Applies to rpi01
+- hosts: rpi01
+  become: true
+  roles:
+  - pi-hole
