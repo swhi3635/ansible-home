@@ -1,0 +1,5 @@
+---
+- hosts: gambler01
+  become: true
+  roles:
+    - unifi-controller

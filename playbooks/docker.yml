@@ -1,11 +1,11 @@
 ---
-# # Applies necessary configs to get a Docker host up and running
-# - hosts: docker_hosts
-#   become: true
-#   roles:
-#   - common
-#   - bastion
-#   - docker
+# Applies necessary configs to get a Docker host up and running
+- hosts: docker_hosts
+  become: true
+  roles:
+  - common
+  - bastion
+  - docker
 
 # Run host-specific docker roles
 - hosts: gambler01
@@ -13,3 +13,8 @@
   roles:
     - media-server
     - unifi-controller
+
+- hosts: rpi01
+  become: true
+  roles:
+    - pi-hole

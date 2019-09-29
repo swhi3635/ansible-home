@@ -1,8 +1,8 @@
 [hypervisors]
 
 [docker_hosts]
-gambler01
-rpi01
+gambler01 ansible_host=gambler01.home.local
+rpi01 ansible_host=rpi01.home.local
 
 [raspberry_pi]
 rpi01
