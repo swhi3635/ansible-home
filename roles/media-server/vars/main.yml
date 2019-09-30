@@ -31,3 +31,5 @@ traefik_commands:
   - "--certificatesresolvers.myhttpchallenge.acme.storage=/letsencrypt/acme.json"
 
 traefik_default_domain: "{{ domain_name }}"
+
+plex_lazyman_plugin_dir: "{{ config_volume_dir }}/plex/Library/Application Support/Plex Media Server/Plug-ins/Lazyman.bundle"
