@@ -29,12 +29,12 @@
     mode: '0644'
     validate: docker-compose -f %s config
 
-- name: Run media-server docker-compose project
-  docker_compose:
-    state: present
-    project_name: media-server
-    project_src: "{{ docker_media_project_dir }}"
-  register: output
+# - name: Run media-server docker-compose project
+#   docker_compose:
+#     state: present
+#     project_name: media-server
+#     project_src: "{{ docker_media_project_dir }}"
+#   register: output
 
 - debug:
     var: output

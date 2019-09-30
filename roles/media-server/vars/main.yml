@@ -22,6 +22,7 @@ ombi_webui_port: 3579
 traefik_commands:
   - "--log.level=INFO"
   - "--providers.docker=true"
+  - "--providers.docker.network=traefik_proxy"
   - "--providers.docker.exposedbydefault=false"
   - "--entrypoints.http.address=:80"
   - "--entrypoints.https.address=:443"
