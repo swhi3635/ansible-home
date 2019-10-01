@@ -4,6 +4,9 @@ services:
     image: traefik:2.0
     container_name: traefik
     command: {{ traefik_commands }}
+    networks:
+      - default
+      - traefik_proxy
     ports:
       - 80:80
       - 443:443
@@ -45,11 +48,14 @@ services:
       - {{ config_volume_dir }}/sonarr:/config
       - {{ media_volume_tv_dir }}:/tv
       - {{ media_volume_downloads_dir }}:/downloads
+    networks:
+      - traefik_proxy
     ports:
       - {{ sonarr_webui_port }}:{{ sonarr_webui_port }}
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=traefik_proxy"
       - "traefik.port={{ sonarr_webui_port }}"
       - "traefik.http.routers.sonarr.rule=Host(`sonarr.{{ traefik_default_domain }}`)"
       - "traefik.http.routers.sonarr.entrypoints=https"
@@ -69,11 +75,14 @@ services:
       - {{ config_volume_dir }}/radarr:/config
       - {{ media_volume_movies_dir }}:/movies
       - {{ media_volume_downloads_dir }}:/downloads
+    networks:
+      - traefik_proxy
     ports:
       - {{ radarr_webui_port }}:{{ radarr_webui_port }}
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=traefik_proxy"
       - "traefik.port={{ radarr_webui_port }}"
       - "traefik.http.routers.radarr.rule=Host(`radarr.{{ traefik_default_domain }}`)"
       - "traefik.http.routers.radarr.entrypoints=https"
@@ -108,13 +117,23 @@ services:
       - TZ={{ default_container_timezone }}
     volumes:
       - {{ config_volume_dir }}/ombi:/config
+    networks:
+      - traefik_proxy
     ports:
       - {{ ombi_webui_port }}:{{ ombi_webui_port }}
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=traefik_proxy"
       - "traefik.port={{ ombi_webui_port }}"
       - "traefik.http.routers.ombi.rule=Host(`ombi.{{ traefik_default_domain }}`)"
       - "traefik.http.routers.ombi.rule=Host(`requests.{{ traefik_default_domain }}`)"
       - "traefik.http.routers.ombi.entrypoints=https"
       - "traefik.http.routers.ombi.tls.certresolver=myhttpchallenge"
+
+networks:
+  traefik_proxy:
+    external:
+      name: traefik_proxy
+  default:
+    driver: bridge
