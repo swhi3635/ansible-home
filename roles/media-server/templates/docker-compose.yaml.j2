@@ -50,6 +50,7 @@ services:
       - {{ media_volume_downloads_dir }}:/downloads
     networks:
       - traefik_proxy
+      - default
     ports:
       - {{ sonarr_webui_port }}:{{ sonarr_webui_port }}
     restart: unless-stopped
@@ -77,6 +78,7 @@ services:
       - {{ media_volume_downloads_dir }}:/downloads
     networks:
       - traefik_proxy
+      - default
     ports:
       - {{ radarr_webui_port }}:{{ radarr_webui_port }}
     restart: unless-stopped
@@ -119,6 +121,7 @@ services:
       - {{ config_volume_dir }}/ombi:/config
     networks:
       - traefik_proxy
+      - default
     ports:
       - {{ ombi_webui_port }}:{{ ombi_webui_port }}
     restart: unless-stopped
