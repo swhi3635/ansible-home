@@ -40,21 +40,3 @@
     var: output
     verbosity: 3
 
-- name: Add LazyMan overrides to /etc/hosts
-  blockinfile:
-    path: /etc/hosts
-    block: |
-      {{ item.ip }} {{ item.name }}
-    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
-  with_items:
-  - { name: mf.svc.nhl.com, ip: 178.62.203.238 }
-  - { name: mlb-ws-mf.media.mlb.com, ip: 178.62.203.238 }
-  - { name: playback.svcs.mlb.com, ip: 178.62.203.238 }
-
-- name: Install LazyMan Plex plugin
-  become_user: "{{ default_user }}"
-  git:
-    repo: 'https://github.com/nomego/Lazyman.bundle.git'
-    dest: "{{ plex_lazyman_plugin_dir }}"
-    clone: yes
-    update: yes
