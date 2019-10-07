@@ -1,0 +1,16 @@
+---
+# docker-compose project locations
+docker_traefik_project_dir: "{{ docker_compose_project_dir }}/traefik"
+
+#traefik configs
+traefik_commands:
+  - "--log.level=INFO"
+  - "--providers.docker=true"
+  - "--providers.docker.network=traefik_proxy"
+  - "--providers.docker.exposedbydefault=false"
+  - "--entrypoints.http.address=:80"
+  - "--entrypoints.https.address=:443"
+  - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge=true"
+  - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge.entrypoint=http"
+  - "--certificatesresolvers.myhttpchallenge.acme.email=sam@samwhitney.com"
+  - "--certificatesresolvers.myhttpchallenge.acme.storage=/letsencrypt/acme.json"

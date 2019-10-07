@@ -18,19 +18,4 @@ radarr_webui_port: 7878
 sonarr_webui_port: 8989
 ombi_webui_port: 3579
 
-#traefik configs
-traefik_commands:
-  - "--log.level=INFO"
-  - "--providers.docker=true"
-  - "--providers.docker.network=traefik_proxy"
-  - "--providers.docker.exposedbydefault=false"
-  - "--entrypoints.http.address=:80"
-  - "--entrypoints.https.address=:443"
-  - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge=true"
-  - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge.entrypoint=http"
-  - "--certificatesresolvers.myhttpchallenge.acme.email=sam@samwhitney.com"
-  - "--certificatesresolvers.myhttpchallenge.acme.storage=/letsencrypt/acme.json"
-
 traefik_default_domain: "{{ domain_name }}"
-
-plex_lazyman_plugin_dir: "{{ config_volume_dir }}/plex/Library/Application Support/Plex Media Server/Plug-ins/Lazyman.bundle"

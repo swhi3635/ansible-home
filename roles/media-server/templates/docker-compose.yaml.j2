@@ -1,20 +1,5 @@
 version: "3"
 services:
-  traefik:
-    image: traefik:2.0
-    container_name: traefik
-    command: {{ traefik_commands }}
-    networks:
-      - default
-      - traefik_proxy
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - {{ config_volume_dir }}/letsencrypt:/letsencrypt
-    restart: unless-stopped
-
   plex:
     image: linuxserver/plex
     container_name: plex
