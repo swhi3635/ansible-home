@@ -119,6 +119,28 @@ services:
       - "traefik.http.routers.ombi.entrypoints=https"
       - "traefik.http.routers.ombi.tls.certresolver=myhttpchallenge"
 
+  droppy:
+    image: silverwind/droppy
+    container_name: droppy
+    environment:
+      - UID={{ default_container_puid }}
+      - GID={{ default_container_pgid }}
+    volumes:
+      - {{ docker_media_project_dir }}:/config
+      - {{ media_volume_media_dir }}:/files
+    networks:
+      - traefik_proxy
+    ports:
+      - {{ droppy_webui_external_port }}:{{ droppy_webui_internal_port }}
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.port={{ droppy_webui_external_port }}"
+      - "traefik.http.routers.droppy.rule=Host(`droppy.{{ traefik_default_domain }}`)"
+      - "traefik.http.routers.droppy.entrypoints=https"
+      - "traefik.http.routers.droppy.tls.certresolver=myhttpchallenge"
+
 networks:
   traefik_proxy:
     external:

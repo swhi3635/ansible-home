@@ -17,5 +17,7 @@ qbittorrent_webui_port: 8181
 radarr_webui_port: 7878
 sonarr_webui_port: 8989
 ombi_webui_port: 3579
+droppy_webui_internal_port: 8989
+droppy_webui_external_port: 8999
 
 traefik_default_domain: "{{ domain_name }}"
