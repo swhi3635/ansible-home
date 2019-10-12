@@ -126,7 +126,7 @@ services:
       - UID={{ default_container_puid }}
       - GID={{ default_container_pgid }}
     volumes:
-      - {{ docker_media_project_dir }}:/config
+      - {{ config_volume_dir }}/droppy:/config
       - {{ media_volume_media_dir }}:/files
     networks:
       - traefik_proxy
