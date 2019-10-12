@@ -1,0 +1,15 @@
+version: "3"
+services:
+  nextcloud:
+    image: linuxserver/nextcloud
+    container_name: nextcloud
+    environment:
+      - PUID={{ default_container_puid }}
+      - PGID={{ default_container_pgid }}
+      - TZ={{ default_container_timezone }}
+    volumes:
+      - {{ docker_nextcloud_project_dir }}:/config
+      - path/to/data:/data
+    ports:
+      - 443:443
+    restart: unless-stopped
