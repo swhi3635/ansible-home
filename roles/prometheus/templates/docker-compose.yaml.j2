@@ -1,0 +1,15 @@
+version: "3"
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    command:
+      - '--config.file=/prometheus-data/prometheus.yml'
+    environment:
+      - PUID={{ default_container_puid }}
+      - PGID={{ default_container_pgid }}
+    volumes:
+      - {{ config_volume_dir }}/prometheus:/prometheus-data
+    ports:
+      - 9090:9090
+    restart: unless-stopped

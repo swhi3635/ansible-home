@@ -1,0 +1,25 @@
+---
+- name: Create docker prometheus project directory
+  file:
+    state: directory
+    path: "{{ docker_prometheus_project_dir }}"
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
+    mode: '0755'
+
+- name: Template docker-compose.yaml.j2 to project directory
+  template:
+    src: docker-compose.yaml.j2
+    dest: "{{ docker_prometheus_project_dir }}/docker-compose.yml"
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
+    mode: '0644'
+    validate: docker-compose -f %s config
+
+- name: Template prometheus.yml to docker volume
+  template:
+    src: prometheus.yml.j2
+    dest: "{{ config_volume_dir }}/prometheus/prometheus.yml"
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
+    mode: '0644'
