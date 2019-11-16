@@ -27,23 +27,3 @@
   args:
     creates: /etc/libvirt/storage/default.xml
 
-- name: download ubuntu 18.04 image
-  command: kcli download ubuntu1804
-  args:
-    creates: /var/lib/libvirt/images/bionic-server-cloudimg-amd64.img
-
-- name: create docker01 VM
-  kvirt_vm:
-    name: docker01
-    state: present
-    profile: bionic-server-cloudimg-amd64.img
-    parameters:
-      numcpus: 4
-      memory: 2048
-      disksize: 40GB
-      nets:
-      - default
-      autostart: true
-  register: docker01_create
-
-- debug: var=docker01_create

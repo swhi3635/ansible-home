@@ -1,4 +1,5 @@
 [hypervisors]
+gambler01 ansible_host=gambler01.home.local
 
 [docker_hosts]
 gambler01 ansible_host=gambler01.home.local
