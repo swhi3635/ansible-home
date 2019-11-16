@@ -2,6 +2,12 @@
 - import_role:
     name: karmab.kcli-modules
 
+- name: setup kcli apt key
+  apt_key:
+    id: 7E3DD443A45040FC730CE463CFC88929B8FA7CB7
+    url: https://packagecloud.io/karmab/kcli/gpgkey
+    state: present
+
 - name: setup kcli apt repository
   apt_repository:
     repo: deb [trusted=yes] https://packagecloud.io/karmab/kcli/ubuntu/ cosmic main
