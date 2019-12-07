@@ -43,11 +43,12 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_proxy"
       - "traefik.port={{ sonarr_webui_port }}"
+      - "traefik.http.middlewares.sonarr-https.redirectscheme.scheme=https"
       - "traefik.http.routers.sonarr.rule=Host(`sonarr.{{ traefik_default_domain }}`)"
-      - "traefik.http.routers.sonarr.entrypoints=https"
+      - "traefik.http.routers.sonarr.entrypoints=http,https"
       - "traefik.http.routers.sonarr.tls.certresolver=myhttpchallenge"
       - "traefik.http.middlewares.sonarr-auth.basicauth.users={{ basic_auth_t0 }}"
-      - "traefik.http.routers.sonarr.middlewares=sonarr-auth@docker"
+      - "traefik.http.routers.sonarr.middlewares=sonarr-auth@docker,sonarr-https@docker"
 
   radarr:
     image: linuxserver/radarr
@@ -71,11 +72,12 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_proxy"
       - "traefik.port={{ radarr_webui_port }}"
+      - "traefik.http.middlewares.radarr-https.redirectscheme.scheme=https"
       - "traefik.http.routers.radarr.rule=Host(`radarr.{{ traefik_default_domain }}`)"
-      - "traefik.http.routers.radarr.entrypoints=https"
+      - "traefik.http.routers.radarr.entrypoints=http,https"
       - "traefik.http.routers.radarr.tls.certresolver=myhttpchallenge"
       - "traefik.http.middlewares.radarr-auth.basicauth.users={{ basic_auth_t0 }}"
-      - "traefik.http.routers.radarr.middlewares=radarr-auth@docker"
+      - "traefik.http.routers.radarr.middlewares=radarr-auth@docker,radarr-https@docker"
 
   qbittorrent:
     image: linuxserver/qbittorrent
@@ -114,10 +116,11 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_proxy"
       - "traefik.port={{ ombi_webui_port }}"
-      - "traefik.http.routers.ombi.rule=Host(`ombi.{{ traefik_default_domain }}`)"
+      - "traefik.http.middlewares.ombi-https.redirectscheme.scheme=https"
       - "traefik.http.routers.ombi.rule=Host(`requests.{{ traefik_default_domain }}`)"
-      - "traefik.http.routers.ombi.entrypoints=https"
+      - "traefik.http.routers.ombi.entrypoints=http,https"
       - "traefik.http.routers.ombi.tls.certresolver=myhttpchallenge"
+      - "traefik.http.routers.ombi.middlewares=ombi-https@docker"
 
   droppy:
     image: silverwind/droppy
@@ -137,9 +140,11 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_proxy"
       - "traefik.port={{ droppy_webui_external_port }}"
+      - "traefik.http.middlewares.droppy-https.redirectscheme.scheme=https"
       - "traefik.http.routers.droppy.rule=Host(`droppy.{{ traefik_default_domain }}`)"
-      - "traefik.http.routers.droppy.entrypoints=https"
+      - "traefik.http.routers.droppy.entrypoints=http,https"
       - "traefik.http.routers.droppy.tls.certresolver=myhttpchallenge"
+      - "traefik.http.routers.droppy.middlewares=droppy-https@docker"
 
 networks:
   traefik_proxy:
