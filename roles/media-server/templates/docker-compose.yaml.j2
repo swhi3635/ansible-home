@@ -116,11 +116,9 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_proxy"
       - "traefik.port={{ ombi_webui_port }}"
-      - "traefik.http.middlewares.ombi-https.redirectscheme.scheme=https"
-      - "traefik.http.routers.ombi.rule=Host(`requests.{{ traefik_default_domain }}`)"
-      - "traefik.http.routers.ombi.entrypoints=http,https"
+      - "traefik.http.routers.ombi.rule=Host(`requests.{{ traefik_default_domain }}`, `ombi.{{ traefik_default_domain }}`)"
+      - "traefik.http.routers.ombi.entrypoints=https"
       - "traefik.http.routers.ombi.tls.certresolver=myhttpchallenge"
-      - "traefik.http.routers.ombi.middlewares=ombi-https@docker"
 
   droppy:
     image: silverwind/droppy
