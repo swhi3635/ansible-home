@@ -91,11 +91,28 @@ services:
     volumes:
       - {{ config_volume_dir }}/qbittorrent:/config
       - {{ media_volume_downloads_dir }}:/downloads
+    networks:
+      - traefik_proxy
+      - default
     ports:
       - 6881:6881
       - 6881:6881/udp
       - {{ qbittorrent_webui_port }}:{{ qbittorrent_webui_port }}
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.port={{ qbittorrent_webui_port }}"
+      - "traefik.http.routers.qb.rule=Host(`qb.{{ traefik_default_domain }}`)"
+      - "traefik.http.routers.qb.entrypoints=https"
+      - "traefik.http.routers.qb.tls.certresolver=myhttpchallenge"
+      - "traefik.http.middlewares.qb-headers.headers.customrequestheaders.X-Frame-Options=SAMEORIGIN"
+      - "traefik.http.middlewares.qb-headers.headers.customrequestheaders.Referer="
+      - "traefik.http.middlewares.qb-headers.headers.customrequestheaders.Origin="
+      - "traefik.http.middlewares.qb-auth.basicauth.users={{ basic_auth_t0 }}"
+      - "traefik.http.routers.qb.middlewares=qb-headers@docker,qb-auth@docker"
+      - "traefik.http.services.qb.loadbalancer.server.port={{ qbittorrent_webui_port }}"
+      - "traefik.http.services.qb.loadbalancer.passhostheader=false"
 
   ombi:
     image: linuxserver/ombi
