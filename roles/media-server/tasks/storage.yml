@@ -1,0 +1,14 @@
+---
+# Create raid array for media storage volume
+- name: create mdraid array
+  import_role:
+    name: ansible-mdadm
+  vars:
+    mdadm_arrays:
+      - name: "{{ mdraid_volume1_name }}"
+        state: present
+        level: 1
+        devices: "{{ mdraid_volume1_devices }}"
+        filesystem: ext4
+        mountpoint: "{{ mdraid_volume1_mountpoint }}"
+        opts: 'noatime'

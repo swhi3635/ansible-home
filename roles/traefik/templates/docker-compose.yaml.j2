@@ -1,10 +1,10 @@
 version: "3"
 services:
   traefik:
-    image: traefik:2.0
+    image: traefik:2.2
     container_name: traefik
     command:
-      - "--log.level=INFO"
+      - "--log.level=DEBUG"
       - "--providers.docker=true"
       - "--providers.docker.network=traefik_proxy"
       - "--providers.docker.exposedbydefault=false"
@@ -14,19 +14,23 @@ services:
       - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge.entrypoint=http"
       - "--certificatesresolvers.myhttpchallenge.acme.email=sam@samwhitney.com"
       - "--certificatesresolvers.myhttpchallenge.acme.storage=/letsencrypt/acme.json"
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
     networks:
       - proxy
     ports:
       - 80:80
       - 443:443
+      - 9989:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - {{ config_volume_dir }}/letsencrypt:/letsencrypt
     labels:
-      - "traefik.http.routers.http-catchall.rule=Hostregexp(`{host:.+}`)"
-      - "traefik.http.routers.http-catchall.entrypoints=http"
-      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https@docker"
+      - "traefik.enable=true"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
+      - "traefik.http.routers.redirs.entrypoints=http"
+      - "traefik.http.routers.redirs.middlewares=redirect-to-https"
     restart: unless-stopped
 
 networks:

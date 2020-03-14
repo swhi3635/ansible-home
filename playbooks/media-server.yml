@@ -2,5 +2,7 @@
 - hosts: gambler01
   become: true
   roles:
-    - traefik
-    - media-server
+    - role: traefik
+      tags: traefik
+    - role: media-server
+      tags: media
