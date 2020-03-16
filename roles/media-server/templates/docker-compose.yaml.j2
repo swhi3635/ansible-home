@@ -42,13 +42,11 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_proxy"
-      - "traefik.port={{ sonarr_webui_port }}"
-      - "traefik.http.middlewares.sonarr-https.redirectscheme.scheme=https"
       - "traefik.http.routers.sonarr.rule=Host(`sonarr.{{ traefik_default_domain }}`)"
       - "traefik.http.routers.sonarr.entrypoints=https"
       - "traefik.http.routers.sonarr.tls.certresolver=myhttpchallenge"
       - "traefik.http.middlewares.sonarr-auth.basicauth.users={{ basic_auth_t0 }}"
-      - "traefik.http.routers.sonarr.middlewares=sonarr-auth@docker,sonarr-https@docker"
+      - "traefik.http.routers.sonarr.middlewares=sonarr-auth@docker"
 
   radarr:
     image: linuxserver/radarr
@@ -71,13 +69,11 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_proxy"
-      - "traefik.port={{ radarr_webui_port }}"
-      - "traefik.http.middlewares.radarr-https.redirectscheme.scheme=https"
       - "traefik.http.routers.radarr.rule=Host(`radarr.{{ traefik_default_domain }}`)"
       - "traefik.http.routers.radarr.entrypoints=https"
       - "traefik.http.routers.radarr.tls.certresolver=myhttpchallenge"
       - "traefik.http.middlewares.radarr-auth.basicauth.users={{ basic_auth_t0 }}"
-      - "traefik.http.routers.radarr.middlewares=radarr-auth@docker,radarr-https@docker"
+      - "traefik.http.routers.radarr.middlewares=radarr-auth@docker"
 
   qbittorrent:
     image: linuxserver/qbittorrent
@@ -102,7 +98,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_proxy"
-      - "traefik.port={{ qbittorrent_webui_port }}"
       - "traefik.http.routers.qb.rule=Host(`qb.{{ traefik_default_domain }}`)"
       - "traefik.http.routers.qb.entrypoints=https"
       - "traefik.http.routers.qb.tls.certresolver=myhttpchallenge"
@@ -132,7 +127,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_proxy"
-      - "traefik.port={{ ombi_webui_port }}"
       - "traefik.http.routers.ombi.rule=Host(`requests.{{ traefik_default_domain }}`, `ombi.{{ traefik_default_domain }}`)"
       - "traefik.http.routers.ombi.entrypoints=https"
       - "traefik.http.routers.ombi.tls.certresolver=myhttpchallenge"
@@ -154,12 +148,31 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik_proxy"
-      - "traefik.port={{ droppy_webui_external_port }}"
-      - "traefik.http.middlewares.droppy-https.redirectscheme.scheme=https"
       - "traefik.http.routers.droppy.rule=Host(`droppy.{{ traefik_default_domain }}`)"
       - "traefik.http.routers.droppy.entrypoints=https"
       - "traefik.http.routers.droppy.tls.certresolver=myhttpchallenge"
-      - "traefik.http.routers.droppy.middlewares=droppy-https@docker"
+
+  tautulli:
+    image: linuxserver/tautulli
+    container_name: tautulli
+    environment:
+      - PUID={{ default_container_puid }}
+      - PGID={{ default_container_pgid }}
+      - TZ={{ default_container_timezone }}
+    volumes:
+      - {{ config_volume_dir }}/tautulli:/config
+      - {{ config_volume_dir }}/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro
+    networks:
+      - traefik_proxy
+    ports:
+      - {{ tautulli_webui_external_port }}:{{ tautulli_webui_internal_port }}
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.http.routers.tautulli.rule=Host(`tautulli.{{ traefik_default_domain }}`)"
+      - "traefik.http.routers.tautulli.entrypoints=https"
+      - "traefik.http.routers.tautulli.tls.certresolver=myhttpchallenge"
 
 networks:
   traefik_proxy:

@@ -4,7 +4,7 @@ services:
     image: traefik:2.2
     container_name: traefik
     command:
-      - "--log.level=DEBUG"
+      - "--log.level=INFO"
       - "--providers.docker=true"
       - "--providers.docker.network=traefik_proxy"
       - "--providers.docker.exposedbydefault=false"
@@ -14,14 +14,11 @@ services:
       - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge.entrypoint=http"
       - "--certificatesresolvers.myhttpchallenge.acme.email=sam@samwhitney.com"
       - "--certificatesresolvers.myhttpchallenge.acme.storage=/letsencrypt/acme.json"
-      - "--api.dashboard=true"
-      - "--api.insecure=true"
     networks:
       - proxy
     ports:
       - 80:80
       - 443:443
-      - 9989:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - {{ config_volume_dir }}/letsencrypt:/letsencrypt
