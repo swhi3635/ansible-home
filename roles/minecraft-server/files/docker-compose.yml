@@ -1,0 +1,39 @@
+version: "3"
+services:
+  minecraft:
+    image: itzg/minecraft-server
+    networks:
+      - minecraft
+    ports:
+      - "25565:25565"
+      - "8123:8123"
+    volumes:
+      - "/mnt/sda/minecraft-server/server:/data"
+    environment:
+      EULA: "TRUE"
+      ENABLE_RCON: "true"
+      RCON_PASSWORD: "nope"
+      RCON_PORT: 28016
+      SERVER_NAME: "OperatorPDX"
+      MAX_PLAYERS: "20"
+      ALLOW_NETHER: "true"
+      MOTD: "FUCK YOU BALTIMORE"
+      MEMORY: "6G"
+      ICON: "https://vignette.wikia.nocookie.net/logopedia/images/1/17/PizzaHutExpressUK1999.png"
+      TYPE: "SPIGOT"
+      CONSOLE: "FALSE"
+      VERSION: "1.15.2"
+    restart: always
+  rcon:
+    image: itzg/rcon
+    networks:
+      - minecraft
+    ports:
+      - "4326:4326"
+      - "4327:4327"
+    volumes:
+      - "/mnt/sda/minecraft-server/rcon:/opt/rcon-web-admin/db"
+
+networks:
+  minecraft:
+    driver: bridge
