@@ -1,0 +1,3 @@
+---
+# docker-compose project locations
+docker_minecraft-server_project_dir: "{{ docker_compose_project_dir }}/minecraft-server"

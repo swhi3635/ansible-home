@@ -1,0 +1,17 @@
+---
+- name: Create docker minecraft-server project directory
+  file:
+    state: directory
+    path: "{{ docker_minecraft-server_project_dir }}"
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
+    mode: '0755'
+
+- name: Template docker-compose.yaml.j2 to project directory
+  template:
+    src: docker-compose.yaml.j2
+    dest: "{{ docker_minecraft-server_project_dir }}/docker-compose.yml"
+    owner: "{{ default_user }}"
+    group: "{{ default_user }}"
+    mode: '0644'
+    validate: docker-compose -f %s config

@@ -164,6 +164,7 @@ services:
       - {{ config_volume_dir }}/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro
     networks:
       - traefik_proxy
+      - default
     ports:
       - {{ tautulli_webui_external_port }}:{{ tautulli_webui_internal_port }}
     restart: unless-stopped

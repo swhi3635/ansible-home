@@ -1,0 +1,41 @@
+version: "3"
+services:
+  minecraft:
+    image: itzg/minecraft-server
+    networks:
+      - minecraft
+    ports:
+      - "25565:25565"
+    volumes:
+      - "mc:/data"
+    environment:
+      EULA: "TRUE"
+      ENABLE_RCON: "true"
+      RCON_PASSWORD: "voter-gown-affecting"
+      RCON_PORT: 28016
+      DIFFICULTY: "normal"
+      SERVER_NAME: "OperatorPDX"
+      OPS: "culex0r"
+      MAX_PLAYERS: "20"
+      ALLOW_NETHER: "true"
+      MODE: "survival"
+      MOTD: "FUCK YOU BALTIMORE"
+      MEMORY: "6G"
+    restart: always
+  rcon:
+    image: itzg/rcon
+    networks:
+      - minecraft
+    ports:
+      - "4326:4326"
+      - "4327:4327"
+    volumes:
+      - "rcon:/opt/rcon-web-admin/db"
+
+volumes:
+  mc: "/mnt/sda/minecraft/server/"
+  rcon: "/mnt/sda/minecraft/rcon"
+
+networks:
+  minecraft:
+    driver: bridge
